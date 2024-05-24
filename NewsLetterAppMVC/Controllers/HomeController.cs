@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewsLetterAppMVC.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,6 +13,7 @@ namespace NewsLetterAppMVC.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly string connectionString = @"Data Source=LAPTOP-R6CK06S9;Initial Catalog=Newsletter;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public ActionResult Index()
         {
             return View();
@@ -25,7 +27,7 @@ namespace NewsLetterAppMVC.Controllers
             }
             else
             {
-                string connectionString = @"Data Source=LAPTOP-R6CK06S9;Initial Catalog=Newsletter;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                
 
                 string queryString = @"INSERT INTO SignUps (FirstName, LastName, EmailAddress) VALUES
                                         (@FirstName, @LastName, @EmailAddress)";
@@ -50,7 +52,29 @@ namespace NewsLetterAppMVC.Controllers
 
         public ActionResult Admin()
         {
+            { 
+                string queryString = @"SELECT Id, FirstName, LastName, EmailAddress from Signups";
+                List<NewsletterSignUp> signups = new List<NewsletterSignUp>();
 
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var signup = new NewsletterSignUp();
+                        signup.Id = Convert.ToInt32(reader["Id"]);
+                        signup.FirstName = reader["FistName"].ToString();
+                        signup.LastName = reader["LastName"].ToString();
+                        signup.EmailAddress = reader["EmailAddress"].ToString();
+                        signups.Add(signup);
+                    }
+                }
+            }
         }
     }
 }
