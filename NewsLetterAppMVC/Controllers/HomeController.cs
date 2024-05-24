@@ -25,13 +25,13 @@ namespace NewsLetterAppMVC.Controllers
             }
             else
             {
-                string connectionString = @"Data Source=LAPTOP-R6CK06S9;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                string connectionString = @"Data Source=LAPTOP-R6CK06S9;Initial Catalog=Newsletter;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-                string querystring = @"INSERT INTO SignUp (FirstName, LastName, EmailAddress) VALUES
+                string queryString = @"INSERT INTO SignUps (FirstName, LastName, EmailAddress) VALUES
                                         (@FirstName, @LastName, @EmailAddress)";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    SqlCommand command = new SqlCommand(querystring, connection);
+                    SqlCommand command = new SqlCommand(queryString, connection);
                     command.Parameters.Add("@FirstName", SqlDbType.VarChar);
                     command.Parameters.Add("@LastName", SqlDbType.VarChar);
                     command.Parameters.Add("@EmailAddress", SqlDbType.VarChar);
@@ -48,18 +48,9 @@ namespace NewsLetterAppMVC.Controllers
             }
         }
 
-        public ActionResult About()
+        public ActionResult Admin()
         {
-            ViewBag.Message = "Your application description page.";
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }
